@@ -1,25 +1,30 @@
-var width, height;
-var svg = d3.select("#main").append("svg");
+let width, height;
+let svg = d3.select("#main").append("svg");
 const margin = {left: 30, top: 10, right: 10, bottom: 30};
 
+let data;
+let scaleX = d3.scaleLinear();
+let scaleY = d3.scaleLinear();
+
+function init() {
+    svg.append("path").attr("class", "mypath");
+    data = d3.range(1000).map(function (x) {
+        return 0.5
+    });
+}
+
 function draw() {
-    var width = window.innerWidth, height = window.innerHeight;
+    width = window.innerWidth; height = window.innerHeight;
 
     svg
         .attr("width", width)
         .attr("height", height)
     ;
 
-    var scaleX = d3.scaleLinear().domain([0, 1000]).range([margin.left, width - margin.right]);
-    var scaleY = d3.scaleLinear().domain([0, 1]).range([height - margin.bottom, margin.top]);
+    scaleX.domain([0, 1000]).range([margin.left, width - margin.right]);
+    scaleY.domain([0, 1]).range([height - margin.bottom, margin.top]);
 
-    var data;
-    data = d3.range(1000).map(function (x) {
-        return 0.5
-    });
-
-    svg.append("path")
-        .attr("class", "mypath")
+    svg.select(".mypath")
         .datum(data)
         .attr("fill", "#69b3a2")
         .attr("opacity", ".8")
@@ -43,7 +48,6 @@ function update() {
         .attr("d", d3.line()
             .curve(d3.curveBasis)
             .x(function (d, i) {
-
                 return scaleX(i);
             })
             .y(function (d, i) {
@@ -59,7 +63,7 @@ var t = d3.timer(function(e) {
     update();
 }, 200)
 */
-
+/*
 var downing = false;
 
 svg.on("mousedown", () => {
@@ -69,15 +73,33 @@ svg.on("mouseup", () => {
     downing = false;
 })
 svg.on("mousemove", (e) => {
-    if (downing) {
+    console.log(e);
         data.shift();
-        data.push((height-d3.pointer(e)[1]) / height);
+        data.push((height - d3.pointer(e)[1]) / height);
         update();
-    }
+
 })
+*/
+/*
+svg.on("click", (e)=> {
+    console.log(e);
+    data.shift();
+    data.push((height - d3.pointer(e)[1]) / height);
+    update();
+});
+*/
+svg.call(
+d3.drag().on("drag", function(e, d){
+    data.shift();
+    data.push((height - d3.pointers(e)[0][1]) / height);
+    update();
+}));
 
-function updateWindow(){
-
+function updateWindow() {
+    draw();
+    console.log("resize")
 }
 
 d3.select(window).on('resize', updateWindow);
+init();
+draw();
