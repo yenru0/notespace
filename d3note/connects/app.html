@@ -2,9 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="https://d3js.org/d3.v7.min.js" ></script>
+    <title>Lot Connect</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        circle {
+            cursor: move;
+        }
+        .magic-vertex {
+            fill-opacity: 0;
+            stroke: #999;
+            stroke-opacity: 0;
+        }
+        .vertex {
+            fill: #1f77b4;
+            fill-opacity: 1;
+            stroke: #999;
+            stroke-opacity: .5;
+        }
+        .link {
+            stroke: #999;
+            stroke-opacity: 1;
+        }
+    </style>
 </head>
 <body>
-
+<div id="main" style="width:100%;height:100%;"></div>
 </body>
+<script src="./app.js"></script>
 </html>
